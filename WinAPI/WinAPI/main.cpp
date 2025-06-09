@@ -36,6 +36,15 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_COMMAND:
 		switch (LOWORD(wParam))
 		{
+		case IDC_BUTTON_COPY:
+		{	/*HWND hEditLogin = GetDlgItem(hwnd, IDC_EDIT_LOGIN);*/
+			HWND hEditPassword = GetDlgItem(hwnd, IDC_EDIT_PASSWORD);
+			CONST INT SIZE = 256;
+			CHAR sz_buffer[SIZE] = {};
+			//SendMessage(hEdit, WM_GETTEXT, SIZE, (LPARAM)sz_buffer);
+			SendMessage(hEditPassword, WM_GETTEXT, 0, (LPARAM)sz_buffer);
+		}
+			break;
 		case IDOK:
 			MessageBox(hwnd, "Была нажата кнопка Ок", "Info", MB_OK);
 			break;
