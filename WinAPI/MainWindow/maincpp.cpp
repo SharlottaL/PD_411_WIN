@@ -35,8 +35,8 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, IN
 	
 	int weith = (workArea.right - workArea.left) * 0.75;
 	int hegth = (workArea.bottom - workArea.top) * 0.75;
-	int x = workArea.left + (workArea.right - workArea.left - weith) / 2;
-	int y = workArea.top + (workArea.bottom - workArea.top - hegth) / 2;
+	int x = (workArea.right + workArea.left - weith) / 2;
+	int y = (workArea.bottom + workArea.top - hegth) / 2;
 	char size[256];
 	sprintf_s(size, sizeof(size), "%s [Размер: %dx%d, Позиция: (%d,%d)]", g_sz_CLASS_NAME, weith, hegth, x, y);
 
