@@ -1,4 +1,5 @@
-﻿#include<Windows.h>
+﻿#define LOGIN "Введите имя пользователя"
+#include<Windows.h>
 #include <commctrl.h>
 #include"resource.h"
 
@@ -33,8 +34,12 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	switch (uMsg)
 	{
 	case WM_INITDIALOG:
-	                  //Выполняется один раз - при запуске окна
+	{
+		HWND hEditLogin = GetDlgItem(hwnd, IDC_EDIT_LOGIN);
+		SendMessage(hEditLogin, WM_SETTEXT, 0, (LPARAM)LOGIN);
+	}//Выполняется один раз - при запуске окна
 		break;
+
 	case WM_COMMAND:
 		
 		
@@ -42,6 +47,35 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		//Обрабатывает нажатие кнопок, перемещение мыши и т.д.
 		switch (LOWORD(wParam))
 		{
+		case IDC_EDIT_LOGIN:
+		{
+			if (HIWORD(wParam) == EN_SETFOCUS)
+			{
+				HWND hEditLogin = GetDlgItem(hwnd, IDC_EDIT_LOGIN);
+				CONST INT SIZE = 256;
+				CHAR sz_buffer[SIZE] = {};
+				SendMessage(hEditLogin, WM_GETTEXT, SIZE, (LPARAM)sz_buffer);
+
+				if (strcmp(sz_buffer, LOGIN) == 0)
+				{
+					SendMessage(hEditLogin, WM_SETTEXT, 0, (LPARAM)"");
+					SendMessage(hEditLogin, EM_SETSEL, 0, 0);
+				}
+			}
+			if (HIWORD(wParam) == EN_KILLFOCUS)
+			{
+				HWND hEditLogin = GetDlgItem(hwnd, IDC_EDIT_LOGIN);
+				CONST INT SIZE = 256;
+				CHAR sz_buffer[SIZE] = {};
+				SendMessage(hEditLogin, WM_GETTEXT, SIZE, (LPARAM)sz_buffer);
+
+				if (sz_buffer[0] == '\0')
+				{
+					SendMessage(hEditLogin, WM_SETTEXT, 0, (LPARAM)LOGIN);
+				}
+			}
+		}
+		break;
 		case IDC_BUTTON_COPY:
 		{
 			HWND hEditLogin = GetDlgItem(hwnd, IDC_EDIT_LOGIN);
