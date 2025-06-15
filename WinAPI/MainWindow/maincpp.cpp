@@ -1,7 +1,7 @@
-#include<Windows.h>
+п»ї#include<Windows.h>
 #include <stdio.h>
 
-const char g_sz_CLASS_NAME[] = "Параметры Окна:";
+const char g_sz_CLASS_NAME[] = "РџР°СЂР°РјРµС‚СЂС‹ РћРєРЅР°:";
 
 INT WINAPI WndProc(HWND hwnd, UINT umsg, WPARAM wParam, LPARAM lParam);
 
@@ -38,7 +38,7 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, IN
 	int x = workArea.left + (workArea.right - workArea.left - weith) / 2;
 	int y = workArea.top + (workArea.bottom - workArea.top - hegth) / 2;
 	char size[256];
-	sprintf_s(size, sizeof(size), "%s [Размер: %dx%d, Позиция: (%d,%d)]", g_sz_CLASS_NAME, weith, hegth, x, y);
+	sprintf_s(size, sizeof(size), "%s [Р Р°Р·РјРµСЂ: %dx%d, РџРѕР·РёС†РёСЏ: (%d,%d)]", g_sz_CLASS_NAME, weith, hegth, x, y);
 
 	
 	HWND hwnd = CreateWindowEx
