@@ -1,5 +1,6 @@
 ﻿#include<Windows.h>
 #include <stdio.h>
+#include"resource.h"
 
 const char g_sz_CLASS_NAME[] = "Параметры Окна:";
 
@@ -13,9 +14,17 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, IN
 	wClass.cbSize = sizeof(wClass);
 	wClass.cbWndExtra = 0;
 	wClass.cbClsExtra = 0;
-	wClass.hIcon = LoadIcon(NULL, IDI_APPLICATION);
-	wClass.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
-	wClass.hCursor = LoadCursor(NULL, IDC_HAND);
+	wClass.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON_EZIK));
+	wClass.hIconSm = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON_ZAY));
+	//wClass.hIcon = (HICON)LoadImage(hInstance, "zay.ico", IMAGE_ICON, LR_DEFAULTSIZE, LR_DEFAULTSIZE, LR_LOADFROMFILE);
+	//wClass.hIconSm = (HICON)LoadImage(hInstance, "ezik.ico", IMAGE_ICON, LR_DEFAULTSIZE, LR_DEFAULTSIZE, LR_LOADFROMFILE);
+	wClass.hCursor = (HCURSOR)LoadImage(
+		hInstance, 
+		"rabbit.cur",
+		IMAGE_CURSOR,
+		LR_DEFAULTSIZE, LR_DEFAULTSIZE,
+		LR_LOADFROMFILE
+	);
 	HBRUSH hBrush = CreateSolidBrush(RGB(180, 90, 130));
 	wClass.hbrBackground = hBrush;
 
