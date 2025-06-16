@@ -30,7 +30,7 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, IN
 		return 0;
 	}
 	
-	RECT workArea;
+	/*RECT workArea;
 	SystemParametersInfoA(SPI_GETWORKAREA, 0, &workArea, 0);
 	
 	int weith = (workArea.right - workArea.left) * 0.75;
@@ -38,17 +38,22 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, IN
 	int x = (workArea.right + workArea.left - weith) / 2;
 	int y = (workArea.bottom + workArea.top - hegth) / 2;
 	char size[256];
-	sprintf_s(size, sizeof(size), "%s [Размер: %dx%d, Позиция: (%d,%d)]", g_sz_CLASS_NAME, weith, hegth, x, y);
-
+	sprintf_s(size, sizeof(size), "%s [Размер: %dx%d, Позиция: (%d,%d)]", g_sz_CLASS_NAME, weith, hegth, x, y);*/
+	INT screen_width = GetSystemMetrics(SM_CXSCREEN);
+	INT screen_heigth = GetSystemMetrics(SM_CXSCREEN);
 	
+	INT window_width = screen_width * .75;
+	INT window_hegth = screen_heigth * 3 / 4;
+	INT window_start_x = screen_width / 8;
+	INT window_start_y = screen_heigth / 8;
 	HWND hwnd = CreateWindowEx
 	(
 		NULL,
 		g_sz_CLASS_NAME,
 		g_sz_CLASS_NAME,
 		WS_OVERLAPPEDWINDOW,
-		x, y,
-		weith, hegth,
+		CW_USEDEFAULT, CW_USEDEFAULT,
+		CW_USEDEFAULT, CW_USEDEFAULT,
 		NULL,
 		NULL,
 		hInstance,
@@ -60,7 +65,7 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, IN
 		MessageBox(NULL, "WINDOW creation failed", "", MB_OK | MB_ICONERROR);
 		return 0;
 	}
-	SetWindowTextA(hwnd, size);
+	/*SetWindowTextA(hwnd, size);*/
 	ShowWindow(hwnd, nCmdShow);
 	UpdateWindow(hwnd);
 
@@ -80,6 +85,24 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
 	case WM_CREATE:
 		break;
+	case WM_MOVE:
+	case WM_SIZE:
+	{
+		RECT window_rect;
+		GetWindowRect(hwnd, &window_rect);
+		INT window_width = window_rect.right - window_rect.left;
+		INT window_height = window_rect.bottom - window_rect.top;
+		CONST INT SIZE = 256;
+		CHAR sz_title[SIZE] = {};
+		sprintf
+		(
+			sz_title,
+			"%s - Position: %ix%i, Size:%iX%i", 
+			g_sz_CLASS_NAME,
+			window_rect.left,window_rect.top,
+			window_width, window_height);
+		SendMessage(hwnd, WM_SETTEXT, 0, (LPARAM)sz_title);
+	}
 	case WM_COMMAND:
 		break;
 	case WM_DESTROY:

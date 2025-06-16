@@ -4,7 +4,7 @@
 #include"resource.h"
 
 BOOL CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-
+BOOL CALLBACK DlgProcAdd(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 //#define MESSAGE_BOX
 
 INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, INT nCmdShow)
@@ -41,8 +41,12 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		break;
 
 	case WM_COMMAND:
-		
-		
+	{
+
+	case IDC_BUTTON_ADD:
+		DialogBoxParam(GetModuleHandle(NULL), MAKEINTRESOURCE(IDD_DIALOG_ADD), hwnd, DlgProcAdd, 0);
+		break;
+	}
 	
 		//Обрабатывает нажатие кнопок, перемещение мыши и т.д.
 		switch (LOWORD(wParam))
@@ -93,6 +97,54 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		}
 		break;
 	case WM_CLOSE:		//Отрабатывает при нажатии на кнопку "Закрыть" X
+		EndDialog(hwnd, 0);
+		break;
+	}
+	return FALSE;
+}
+
+BOOL CALLBACK DlgProcAdd(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+	switch (uMsg)
+	{
+	case WM_INITDIALOG:
+		SetFocus(GetDlgItem(hwnd, IDC_EDIT_ADD));
+		break;
+
+	case WM_COMMAND:
+	{
+		switch (LOWORD(wParam))
+		{
+		case IDOK:
+		{
+			const int SIZE = 256;
+			TCHAR sz_buffer[SIZE] = {};
+			HWND hEditAdd = GetDlgItem(hwnd, IDC_EDIT_ADD);
+			HWND hParent = GetParent(hwnd);
+			HWND hCombo = GetDlgItem(hParent, IDC_COMBO);
+
+			SendMessage(hEditAdd, WM_GETTEXT, SIZE, (LPARAM)sz_buffer);
+
+			if (SendMessage(hCombo, CB_FINDSTRING, -1, (LPARAM)sz_buffer) == CB_ERR)
+			{
+				SendMessage(hCombo, CB_ADDSTRING, 0, (LPARAM)sz_buffer);
+			}
+			else
+			{
+				MessageBox(hwnd,"Такое значение уже есть", "Info", MB_OK | MB_ICONINFORMATION);
+			}
+			EndDialog(hwnd, 1);
+		}
+		break;
+
+		case IDCANCEL:
+			EndDialog(hwnd, 0);
+			break;
+		}
+	}
+	break;
+
+	case WM_CLOSE:
 		EndDialog(hwnd, 0);
 		break;
 	}

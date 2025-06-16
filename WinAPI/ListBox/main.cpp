@@ -1,17 +1,23 @@
+п»ї#define  _CRT_SECURE_NO_WARNINGS
+#ifndef LB_GETLBTEXT
+#define LB_GETLBTEXT 0x018A
+#endif
 #include<Windows.h>
 #include<cstdio>
 #include"resource.h"
 
 
-CONST CHAR* G_SZ_VALUES[] = { "This", "is", "my","First","Combo","Box","Хорошо","живет","на ","свете","Винни","Пух" };
+CONST CHAR* G_SZ_VALUES[] = { "This", "is", "my","First","Combo","Box","РҐРѕСЂРѕС€Рѕ","Р¶РёРІРµС‚","РЅР° ","СЃРІРµС‚Рµ","Р’РёРЅРЅРё","РџСѓС…" };
 
-BOOL CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+INT CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+INT CALLBACK DlgProcAdd(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, INT nCmdShow)
 {
-	DialogBoxParam(hInstance, MAKEINTRESOURCE(IDD_DIALOG), NULL, DlgProc, 0);
+	DialogBoxParam(hInstance, MAKEINTRESOURCE(IDD_DIALOG_MAIN), NULL, DlgProc, 0);
 	return 0;
 }
+
 BOOL CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch (uMsg)
@@ -20,37 +26,103 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
 		HICON hIcon = LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(IDI_ICON1));
 		SendMessage(hwnd, WM_SETICON, 0, (LPARAM)hIcon);
-		HWND hCombo = GetDlgItem(hwnd, IDC_COMBO);
+		HWND hList = GetDlgItem(hwnd, IDC_LIST);
 		for (int i = 0; i < sizeof(G_SZ_VALUES) / sizeof(G_SZ_VALUES[0]); i++)
 		{
-			SendMessage(hCombo, CB_ADDSTRING, 0, (LPARAM)G_SZ_VALUES[i]);
+			SendMessage(hList, LB_ADDSTRING, 0, (LPARAM)G_SZ_VALUES[i]);
 		}
-	}//Выполняется один раз - при запуске окна
+	}
 	break;
 	case WM_COMMAND:
 	{
 		switch (LOWORD(wParam))
 		{
+		case IDC_BUTTON_ADD:
+			DialogBoxParam(GetModuleHandle(NULL), MAKEINTRESOURCE(IDD_DIALOG_ADD), hwnd, DlgProcAdd, 0);
+			break;
+		case IDC_BUTTON_DELETE:
+		{
+			HWND hList = GetDlgItem(hwnd, IDC_LIST); 
+			int iSel = (int)SendMessage(hList, LB_GETCURSEL, 0, 0);
+			if (iSel != LB_ERR)
+			{
+				SendMessage(hList, LB_DELETESTRING, iSel, 0);
+			}
+			else
+			{
+				MessageBox(hwnd, "РџРѕР¶Р°Р»СѓР№СЃС‚Р°, РІС‹Р±РµСЂРёС‚Рµ РїСѓРЅРєС‚ РґР»СЏ СѓРґР°Р»РµРЅРёСЏ", "РРЅС„РѕСЂРјР°С†РёСЏ", MB_OK | MB_ICONINFORMATION);
+			}
+
+		}
+		break;
 		case IDOK:
 		{
 			CONST INT SIZE = 256;
 			CHAR sz_buffer[SIZE] = {};
 			CHAR sz_message[SIZE] = {};
-			HWND hCombo = GetDlgItem(hwnd, IDC_COMBO);
-			INT i = SendMessage(hCombo, CB_GETCURSEL, 0, 0);
-			SendMessage(hCombo, CB_GETLBTEXT, i, (LPARAM)sz_buffer);
-			if (i == -1)strcpy(sz_message, "Выберите вашний вариант");
+			HWND hList = GetDlgItem(hwnd, IDC_LIST);
+			INT i = SendMessage(hList, LB_GETCURSEL, 0, 0);
+			SendMessage(hList, LB_GETLBTEXT, i, (LPARAM)sz_buffer);
+			if (i == -1)strcpy(sz_message, "Р’С‹Р±РµСЂРёС‚Рµ РІР°С€РЅРёР№ РІР°СЂРёР°РЅС‚");
 			else
-				sprintf(sz_message, "Вы выбрали пункт % i  со значением '%s'", i, sz_buffer);
+				sprintf(sz_message, "Р’С‹ РІС‹Р±СЂР°Р»Рё РїСѓРЅРєС‚ % i  СЃРѕ Р·РЅР°С‡РµРЅРёРµРј '%s'", i, sz_buffer);
 			MessageBox(hwnd, sz_message, "Info", MB_OK | MB_ICONINFORMATION);
 		}
 		break;
 		case IDCANCEL:EndDialog(hwnd, 0); break;
 		}
 	}
-	//Обрабатывает нажатие кнопок, перемещение мыши и т.д.
+	
 	break;
-	case WM_CLOSE:		//Отрабатывает при нажатии на кнопку "Закрыть" X
+	case WM_CLOSE:		
+		EndDialog(hwnd, 0);
+		break;
+	}
+	return FALSE;
+}
+
+BOOL CALLBACK DlgProcAdd(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+	switch (uMsg)
+	{
+	case WM_INITDIALOG:
+		SetFocus(GetDlgItem(hwnd, IDC_EDIT_ADD));
+		break;
+
+	case WM_COMMAND:
+	{
+		switch (LOWORD(wParam))
+		{
+		case IDOK:
+		{
+			const int SIZE = 256;
+			TCHAR sz_buffer[SIZE] = {};
+			HWND hEditAdd = GetDlgItem(hwnd, IDC_EDIT_ADD);
+			HWND hParent = GetParent(hwnd);
+			HWND hList = GetDlgItem(hParent, IDC_LIST);
+
+			SendMessage(hEditAdd, WM_GETTEXT, SIZE, (LPARAM)sz_buffer);
+
+			if (SendMessage(hList, LB_FINDSTRING, -1, (LPARAM)sz_buffer) == LB_ERR)
+			{
+				SendMessage(hList, LB_ADDSTRING, 0, (LPARAM)sz_buffer);
+			}
+			else
+			{
+				MessageBox(hwnd, "РўР°РєРѕРµ Р·РЅР°С‡РµРЅРёРµ СѓР¶Рµ РµСЃС‚СЊ", "Info", MB_OK | MB_ICONINFORMATION);
+			}
+			EndDialog(hwnd, 1);
+		}
+		break;
+
+		case IDCANCEL:
+			EndDialog(hwnd, 0);
+			break;
+		}
+	}
+	break;
+
+	case WM_CLOSE:
 		EndDialog(hwnd, 0);
 		break;
 	}
