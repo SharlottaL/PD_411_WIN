@@ -1,4 +1,4 @@
-#include<Windows.h>
+﻿#include<Windows.h>
 #include"resource.h"
 
 CONST CHAR g_sz_CLASS_NAME[] = "MYCALC";
@@ -71,6 +71,227 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			GetModuleHandle(NULL),
 			NULL
 		);
+		CreateWindowEx
+		(
+			NULL, "Button", "0",
+			WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+			210, 180,
+			110, 35,
+			hwnd,
+			(HMENU)IDC_BUTTON_0,
+			GetModuleHandle(NULL),
+			NULL
+		);
+		CreateWindowEx
+		(
+			NULL, "Button", "1",
+			WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+			100, 145,
+			110, 35,
+			hwnd,
+			(HMENU)IDC_BUTTON_1,
+			GetModuleHandle(NULL),
+			NULL
+		);
+		CreateWindowEx
+		(
+			NULL, "Button", "2",
+			WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+			210, 145,
+			110, 35,
+			hwnd,
+			(HMENU)IDC_BUTTON_2,
+			GetModuleHandle(NULL),
+			NULL
+		);
+		CreateWindowEx
+		(
+			NULL, "Button", "3",
+			WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+			320, 145,
+			110, 35,
+			hwnd,
+			(HMENU)IDC_BUTTON_3,
+			GetModuleHandle(NULL),
+			NULL
+		);
+		CreateWindowEx
+		(
+			NULL, "Button", "4",
+			WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+			100, 110,
+			110, 35,
+			hwnd,
+			(HMENU)IDC_BUTTON_4,
+			GetModuleHandle(NULL),
+			NULL
+		);
+		CreateWindowEx
+		(
+			NULL, "Button", "5",
+			WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+			210, 110,
+			110, 35,
+			hwnd,
+			(HMENU)IDC_BUTTON_5,
+			GetModuleHandle(NULL),
+			NULL
+		);
+		CreateWindowEx
+		(
+			NULL, "Button", "6",
+			WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+			320, 110,
+			110, 35,
+			hwnd,
+			(HMENU)IDC_BUTTON_6,
+			GetModuleHandle(NULL),
+			NULL
+		);
+		CreateWindowEx
+		(
+			NULL, "Button", "7",
+			WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+			100, 75,
+			110, 35,
+			hwnd,
+			(HMENU)IDC_BUTTON_7,
+			GetModuleHandle(NULL),
+			NULL
+		);
+		CreateWindowEx
+		(
+			NULL, "Button", "8",
+			WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+			210, 75,
+			110, 35,
+			hwnd,
+			(HMENU)IDC_BUTTON_8,
+			GetModuleHandle(NULL),
+			NULL
+		);
+		CreateWindowEx
+		(
+			NULL, "Button", "9",
+			WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+			320, 75,
+			110, 35,
+			hwnd,
+			(HMENU)IDC_BUTTON_9,
+			GetModuleHandle(NULL),
+			NULL
+		);
+		CreateWindowEx
+		(
+			NULL, "Button", "X",
+			WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+			20, 75,
+			80, 35,
+			hwnd,
+			(HMENU)IDC_BUTTON_ASTER,
+			GetModuleHandle(NULL),
+			NULL
+		);
+		CreateWindowEx
+		(
+			NULL, "Button", "/",
+			WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+			20, 110,
+			80, 35,
+			hwnd,
+			(HMENU)IDC_BUTTON_SLASH,
+			GetModuleHandle(NULL),
+			NULL
+		);
+		CreateWindowEx
+		(
+			NULL, "Button", "+",
+			WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+			20, 145,
+			80, 35,
+			hwnd,
+			(HMENU)IDC_BUTTON_PLUS,
+			GetModuleHandle(NULL),
+			NULL
+		);
+		CreateWindowEx
+		(
+			NULL, "Button", "-",
+			WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+			20, 180,
+			80, 35,
+			hwnd,
+			(HMENU)IDC_BUTTON_MINUS,
+			GetModuleHandle(NULL),
+			NULL
+		);
+		CreateWindowEx
+		(
+			NULL, "Button", ".",
+			WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+			100, 180,
+			110, 35,
+			hwnd,
+			(HMENU)IDC_BUTTON_POINT,
+			GetModuleHandle(NULL),
+			NULL
+		);
+		CreateWindowEx
+		(
+			NULL, "Button", "=",
+			WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+			320, 180,
+			110, 35,
+			hwnd,
+			(HMENU)IDC_BUTTON_EQUAL,
+			GetModuleHandle(NULL),
+			NULL
+		);
+		CreateWindowEx
+		(
+			NULL, "Button", "%",
+			WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+			430, 145,
+			80, 35,
+			hwnd,
+			(HMENU)IDC_BUTTON_PROCENT,
+			GetModuleHandle(NULL),
+			NULL
+		);
+		CreateWindowEx
+		(
+			NULL, "Button", "C",
+			WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+			430, 110,
+			80, 35,
+			hwnd,
+			(HMENU)IDC_BUTTON_CLR,
+			GetModuleHandle(NULL),
+			NULL
+		);
+		CreateWindowEx
+		(
+			NULL, "Button", "D",
+			WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+			430, 75,
+			80, 35,
+			hwnd,
+			(HMENU)IDC_BUTTON_DEL,
+			GetModuleHandle(NULL),
+			NULL
+		);
+		CreateWindowEx
+		(
+			NULL, "Button", "e",
+			WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+			430, 180,
+			80, 35,
+			hwnd,
+			(HMENU)IDC_BUTTON_E,
+			GetModuleHandle(NULL),
+			NULL
+		);
+		
 	}
 		break;
 	case WM_COMMAND:

@@ -22,12 +22,16 @@
 #define IDC_BUTTON_POINT                   1010
 #define IDC_BUTTON_PLUS                    1011
 #define IDC_BUTTON_MINUS                   1012
-#define IDC_BUTTON_ASTEr                   1013
+#define IDC_BUTTON_ASTER                   1013
 #define IDC_BUTTON_SLASH                   1014
 
 #define IDC_BUTTON_BSP                     1015
 #define IDC_BUTTON_CLR                     1016
 #define IDC_BUTTON_EQUAL                   1017
+#define IDC_BUTTON_DEL                     1018
+#define IDC_BUTTON_PROCENT                 1019
+#define IDC_BUTTON_E                 1020
+
 
 // Next default values for new objects
 // 
