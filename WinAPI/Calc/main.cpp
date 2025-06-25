@@ -8,9 +8,11 @@ CONST CHAR g_sz_CLASS_NAME[] = "MyCalc";
 CONST CHAR* g_sz_OPERATIONS[] = { "+", "-", "*", "/" };
 CONST CHAR* g_sz_EDIT[] = { "<-", "C", "=" };
 
+//g_i_ - Global Integer
 CONST INT g_i_BUTTON_SIZE = 50;
 CONST INT g_i_INTERVAL = 1;
 CONST INT g_i_BUTTON_SPACE = g_i_BUTTON_SIZE + g_i_INTERVAL;
+//CONST INT g_i_BUTTON_SPACE_DOUBLE = (g_i_BUTTON_SIZE + g_i_INTERVAL) * 2;
 
 CONST INT g_i_BUTTON_SIZE_DOUBLE = g_i_BUTTON_SIZE * 2 + g_i_INTERVAL;
 CONST INT g_i_START_X = 10;
@@ -66,9 +68,8 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, IN
 		hInstance,
 		NULL
 	);
-	ShowWindow(hwnd, nCmdShow);
+	ShowWindow(hwnd, nCmdShow);	
 	UpdateWindow(hwnd);			
-
 
 	MSG msg;
 	while (GetMessage(&msg, NULL, 0, 0) > 0)
@@ -84,8 +85,9 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	static DOUBLE a = DBL_MIN;
 	static DOUBLE b = DBL_MIN;
 	static INT operation = 0;
-	static BOOL input = FALSE;
-	static BOOL input_operation = FALSE;
+	static BOOL input = FALSE;				
+	static BOOL input_operation = FALSE;	
+
 	switch (uMsg)
 	{
 	case WM_CREATE:
@@ -146,7 +148,7 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			GetModuleHandle(NULL),
 			NULL
 		);
-	
+
 		for (int i = 0; i < 4; i++)
 		{
 			CreateWindowEx
@@ -176,12 +178,6 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				NULL
 			);
 		}
-		/*static DOUBLE a = DBL_MIN;
-		static DOUBLE b = DBL_MIN;
-		static CHAR operation = 0;
-		static BOOL input = FALSE;
-		static BOOL input_operation = FALSE;*/
-		
 	}
 	break;
 	case WM_COMMAND:
@@ -192,10 +188,8 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		if (LOWORD(wParam) >= IDC_BUTTON_0 && LOWORD(wParam) <= IDC_BUTTON_POINT)
 		{
 			if (input == FALSE)SendMessage(hEditDisplay, WM_SETTEXT, 0, (LPARAM)"0");
-			if (LOWORD(wParam) == IDC_BUTTON_POINT)
-				szDigit[0] = '.';
-			else
-				szDigit[0] = LOWORD(wParam) - IDC_BUTTON_0 + '0';
+			if (LOWORD(wParam) == IDC_BUTTON_POINT)	szDigit[0] = '.';
+			else				szDigit[0] = LOWORD(wParam) - IDC_BUTTON_0 + '0';
 			SendMessage(hEditDisplay, WM_GETTEXT, g_SIZE, (LPARAM)szDisplay);
 			if (szDisplay[0] == '0' && szDisplay[1] != '.')szDisplay[0] = 0;
 			if (szDigit[0] == '.' && strchr(szDisplay, '.'))break;
@@ -205,17 +199,12 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		}
 		if (LOWORD(wParam) >= IDC_BUTTON_PLUS && LOWORD(wParam) <= IDC_BUTTON_SLASH)
 		{
-			//SendMessage(hEditDisplay, WM_GETTEXT, g_SIZE, (LPARAM)szDisplay);
-			//if (input && a == DBL_MIN)a = atof(szDisplay)
-			/*(input&& a == DBL_MIN ? a : b) = atof(szDisplay);*/
 			SendMessage(hEditDisplay, WM_GETTEXT, g_SIZE, (LPARAM)szDisplay);
-			if (input && a == DBL_MIN)a = atof(szDisplay);
-			if (input) b = atof(szDisplay);
-			if (a == DBL_MIN)break;
-			//else break;
+			if (input && a == DBL_MIN)a = atof(szDisplay);	
+			if (input)b = atof(szDisplay);
 			input = FALSE;
-			SendMessage(hwnd, WM_COMMAND, IDC_BUTTON_EQUAL, NULL);
-			operation = wParam;
+			SendMessage(hwnd, WM_COMMAND, IDC_BUTTON_EQUAL, 0);	
+			operation = LOWORD(wParam);		
 			input_operation = TRUE;
 		}
 		if (LOWORD(wParam) == IDC_BUTTON_BSP)
@@ -235,52 +224,24 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		if (LOWORD(wParam) == IDC_BUTTON_EQUAL)
 		{
 			SendMessage(hEditDisplay, WM_GETTEXT, g_SIZE, (LPARAM)szDisplay);
-			if (input && a == DBL_MIN)a = atof(szDisplay);
-				if (input) b = atof(szDisplay);
-			/*(input&& a == DBL_MIN ? a : b) = atof(szDisplay);*/
+			if (input && a == DBL_MIN)a = atof(szDisplay);	
+			if (input) b = atof(szDisplay);
+			if (a == DBL_MIN) break;
 			input = FALSE;
 			switch (operation)
 			{
-			case IDC_BUTTON_PLUS: a += b; break;
-			case IDC_BUTTON_MINUS: a -= b; break;
-			case IDC_BUTTON_ASTER: a *= b; break;
-			case IDC_BUTTON_SLASH: a /= b; break;
+			case IDC_BUTTON_PLUS:	a += b;		break;
+			case IDC_BUTTON_MINUS:	a -= b;		break;
+			case IDC_BUTTON_ASTER:	a *= b;		break;
+			case IDC_BUTTON_SLASH:	a /= b;		break;
 			}
 			input_operation = FALSE;
 			sprintf(szDisplay, "%g", a);
 			SendMessage(hEditDisplay, WM_SETTEXT, 0, (LPARAM)szDisplay);
 		}
 
-		/*CHAR szOperator[2] = {};
-		if (LOWORD(wParam) >= IDC_BUTTON_PLUS && LOWORD(wParam) <= IDC_BUTTON_SLASH && LOWORD(wParam) == IDC_BUTTON_EQUAL)
-		{
-		    if (LOWORD(wParam) == IDC_BUTTON_PLUS)
-				szOperator[0] = '+';
-			else if (LOWORD(wParam) == IDC_BUTTON_MINUS)
-				szOperator[0] = '-';
-			else if (LOWORD(wParam) == IDC_BUTTON_ASTER)
-				szOperator[0] = '*';
-			else if (LOWORD(wParam) == IDC_BUTTON_SLASH)
-				szOperator[0] = '/';
-			else if (LOWORD(wParam) == IDC_BUTTON_EQUAL)
-				szOperator[0] = '=';
-			else
-				szDigit[0] = LOWORD(wParam) - IDC_BUTTON_0 + '0';
-			SendMessage(hEditDisplay, WM_GETTEXT, g_SIZE, (LPARAM)szDisplay);
-
-			if (szDisplay[0] == '0' && szDisplay[1] != '.') szDisplay[0] = 0;
-					strcat(szDisplay, szOperator);
-				SendMessage(hEditDisplay, WM_SETTEXT, 0, (LPARAM)szDisplay);
-		}
-		CHAR szSum[2] = {};
-		if (LOWORD(wParam) >= IDC_BUTTON_PLUS && LOWORD(wParam) <= IDC_BUTTON_SLASH && LOWORD(wParam) == IDC_BUTTON_EQUAL)
-		{
-			szSum[0] = IDC_BUTTON_0 + '0' + IDC_BUTTON_0 + '0';
-			SendMessage(hEditDisplay, WM_GETTEXT, g_SIZE, (LPARAM)szDisplay);
-		}*/
-	
 	}
-		break;
+	break;
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
@@ -288,7 +249,6 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		DestroyWindow(hwnd);
 		break;
 	default:return DefWindowProc(hwnd, uMsg, wParam, lParam);
-}
+	}
 	return FALSE;
 }
-
