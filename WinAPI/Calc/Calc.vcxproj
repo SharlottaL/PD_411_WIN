@@ -132,7 +132,34 @@
     <ResourceCompile Include="Resource.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="ico\0.ico" />
+    <Image Include="ico\1.ico" />
+    <Image Include="ico\2.ico" />
+    <Image Include="ico\3.ico" />
     <Image Include="ico\32officeicons-16_89723.ico" />
+    <Image Include="ico\4.ico" />
+    <Image Include="ico\5.ico" />
+    <Image Include="ico\6.ico" />
+    <Image Include="ico\7.ico" />
+    <Image Include="ico\8.ico" />
+    <Image Include="ico\9.ico" />
+    <Image Include="ico\back.ico" />
+    <Image Include="ico\dot.ico" />
+    <Image Include="ico\eigth.ico" />
+    <Image Include="ico\equal.ico" />
+    <Image Include="ico\five.ico" />
+    <Image Include="ico\four.ico" />
+    <Image Include="ico\minus.ico" />
+    <Image Include="ico\nine.ico" />
+    <Image Include="ico\one.ico" />
+    <Image Include="ico\plus.ico" />
+    <Image Include="ico\six.ico" />
+    <Image Include="ico\slash.ico" />
+    <Image Include="ico\three.ico" />
+    <Image Include="ico\two.ico" />
+    <Image Include="ico\um.ico" />
+    <Image Include="ico\zero.ico" />
+    <Image Include="ico\сlr.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

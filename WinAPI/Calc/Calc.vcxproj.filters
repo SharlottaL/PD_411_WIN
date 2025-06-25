@@ -33,5 +33,86 @@
     <Image Include="ico\32officeicons-16_89723.ico">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="ico\eigth.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="ico\five.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="ico\four.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="ico\nine.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="ico\six.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="ico\three.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="ico\two.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="ico\zero.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="ico\one.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="ico\0.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="ico\1.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="ico\2.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="ico\7.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="ico\8.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="ico\9.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="ico\3.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="ico\4.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="ico\5.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="ico\6.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="ico\plus.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="ico\minus.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="ico\um.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="ico\slash.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="ico\dot.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="ico\back.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="ico\сlr.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="ico\equal.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
