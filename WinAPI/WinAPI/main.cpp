@@ -3,6 +3,7 @@
 #include <commctrl.h>
 #include"resource.h"
 
+
 BOOL CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 BOOL CALLBACK DlgProcAdd(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 //#define MESSAGE_BOX

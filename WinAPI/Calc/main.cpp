@@ -33,6 +33,7 @@ CONST INT g_SIZE = 256;
 
 INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 VOID SetSkin(HWND hwnd, CONST CHAR sz_skin[]);
+VOID SetSkinFromDLL(HWND hwnd, CONST CHAR sz_skin[]);
 
 INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, INT nCmdShow)
 {
@@ -194,7 +195,8 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		//MessageBox(hwnd, sz_error, "", MB_OK);
 		//SendMessage(hwnd, WM_SETICON, 0, (LPARAM)hIcon);
 		//SendMessage(GetDlgItem(hwnd, IDC_BUTTON_0), BM_SETIMAGE, IMAGE_BITMAP, (LPARAM)hIcon);
-		SetSkin(hwnd, "metal_mistral");
+		//SetSkin(hwnd, "metal_mistral");
+		SetSkinFromDLL(hwnd, "metal_mistral");
 	}
 	break;
 	case WM_COMMAND:
@@ -431,21 +433,25 @@ VOID SetSkin(HWND hwnd, CONST CHAR sz_skin[])
 		SendMessage(GetDlgItem(hwnd, i), BM_SETIMAGE, IMAGE_BITMAP, (LPARAM)bmpIcon);
 	}
 	std::cout << delimiter << std::endl;
-	//for (int i = 0; i <= 2; i++)
-	//{
-	//	sprintf(sz_filename, "BMP\\%s\\button_%s.bmp", sz_skin, g_sz_OTHER_NAME_FILE[i]);
-	//	HBITMAP bmpIcon = (HBITMAP)LoadImage
-	//	(
-	//		GetModuleHandle(NULL),
-	//		sz_filename,
-	//		IMAGE_BITMAP,
-	//		g_i_BUTTON_SIZE,
-	//		i == 2 ? g_i_BUTTON_SIZE_DOUBLE : g_i_BUTTON_SIZE,
-	//		LR_LOADFROMFILE
-	//	);
-	//	PrintLastError(GetLastError());
-	//	//MessageBox(hwnd, lpszMessage, "", MB_OK);
-	//	SendMessage(GetDlgItem(hwnd, IDC_BUTTON_BSP + i), BM_SETIMAGE, IMAGE_BITMAP, (LPARAM)bmpIcon);
-	//}
-	//std::cout << delimiter << std::endl;
 }
+
+VOID SetSkinFromDLL(HWND hwnd, CONST CHAR sz_skin[])
+{
+	HMODULE hButtonsModule = LoadLibrary(sz_skin);//Принципиально важно, 
+	//чтобы ДЛЛ файл находился в одном каталоге с нашим exe файлом!!!
+	//HINSTANCE hButtons = GetModuleHandle("Buttons.dll");
+	for (int i = IDC_BUTTON_0; i <= IDC_BUTTON_EQUAL; i++)
+	{
+		HBITMAP bmpButton = (HBITMAP)LoadImage
+		(
+			hButtonsModule,
+			MAKEINTRESOURCE(i),
+			IMAGE_BITMAP,
+			i == IDC_BUTTON_0 ? g_i_BUTTON_SIZE_DOUBLE : g_i_BUTTON_SIZE,
+			i == IDC_BUTTON_EQUAL ? g_i_BUTTON_SIZE_DOUBLE : g_i_BUTTON_SIZE,
+			LR_SHARED
+		);
+		SendMessage(GetDlgItem(hwnd, i), BM_SETIMAGE, IMAGE_BITMAP, (LPARAM)bmpButton);
+	}
+	FreeLibrary(hButtonsModule);
+};
