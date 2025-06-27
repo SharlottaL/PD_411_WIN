@@ -3,26 +3,6 @@
 // Used by Resource.rc
 //
 #define IDI_ICON                        101
-#define IDI_ICON_0                      118
-#define IDI_ICON_1                      119
-#define IDI_ICON_2                      120
-#define IDI_ICON_3                      121
-#define IDI_ICON_4                      122
-#define IDI_ICON_5                      123
-#define IDI_ICON_6                      124
-#define IDI_ICON_7                      125
-#define IDI_ICON_8                      126
-#define IDI_ICON_9                      127
-#define IDI_ICON1                       130
-#define IDI_ICON2                       131
-#define IDI_ICON3                       132
-#define IDI_ICON4                       133
-#define IDI_ICON5                       134
-#define IDI_ICON_DOT                    135
-#define IDI_ICON6                       136
-#define IDI_ICON_D                      137
-#define IDI_ICON_C                      138
-#define IDI_ICON_E                      139
 #define IDC_EDIT_DISPLAY                999
 #define IDC_BUTTON_0                    1000
 #define IDC_BUTTON_1                    1001
