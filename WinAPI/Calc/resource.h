@@ -3,6 +3,12 @@
 // Used by Resource.rc
 //
 #define IDI_ICON                        101
+
+#define CM_EXIT							 200
+#define CM_SQUARE_BLUE					 201
+#define CM_METAL_MISTRAL				 202
+#define CM_SMESHARIKI				     203
+
 #define IDC_EDIT_DISPLAY                999
 #define IDC_BUTTON_0                    1000
 #define IDC_BUTTON_1                    1001
