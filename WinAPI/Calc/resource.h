@@ -9,6 +9,7 @@
 #define CM_METAL_MISTRAL				 202
 #define CM_SMESHARIKI				     203
 
+
 #define IDC_EDIT_DISPLAY                999
 #define IDC_BUTTON_0                    1000
 #define IDC_BUTTON_1                    1001

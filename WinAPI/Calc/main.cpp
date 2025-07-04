@@ -193,9 +193,9 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 		//SetSkin(hwnd, "metal_mistral");
 		SetSkinFromDLL(hwnd, "smeshariki");
-		//LoadLibrary("fons.DLL");
-		//LoadFontsFromDLL(Fonts);
-		//SetFont(hwnd, g_sz_FONT[font_index]);
+		HMODULE hFonts = LoadLibrary("fons.DLL");
+		LoadFontsFromDLL(hFonts);
+		SetFont(hwnd, g_sz_FONT[font_index]);
 
 	}
 	break;
@@ -413,6 +413,7 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			//SetFocus(hEditDisplay);
 			//SetSkinFromDLL(hwnd, g_sz_SKIN[index]);
 		}
+		
 
 	}
 	break;
@@ -503,42 +504,43 @@ VOID SetSkinFromDLL(HWND hwnd, CONST CHAR sz_skin[])
 	}
 	FreeLibrary(hButtonsModule);
 }
-//
-//VOID LoadFontFromDLL(HMODULE hFontModule, INT resourseID)
-//{
-//	HRSRC hFntSrc = FindResource(hFontModule, MAKEINTRESOURCE(resourseID), MAKEINTRESOURCE(RT_FONT));
-//	HGLOBAL hFntMem = LoadResource(hFontModule, hFntSrc);
-//	VOID* fntData = LockResource(hFntMem);
-//	DWORD nFonts = 0;
-//	DWORD len = SizeofResource(hFontModule, hFntSrc);
-//	AddFontMemResourceEx(fntData, len, NULL, &nFonts);
-//
-//}
-//VOID LoadFontsFromDLL(HMODULE hFontModule)
-//{
-//	for (int i = 301; i <= 303; i++)
-//	{
-//		LoadFontFromDLL(hFontModule, i);
-//	}
-//}
-//
-//VOID SetFont(HWND hwnd, CONST CHAR font_name[])
-//{
-//	HWND hEditDisplay = GetDlgItem(hwnd, IDC_EDIT_DISPLAY);
-//	//AddFontResourceEx("fons\\Grainne-Ea52e.ttf", FR_PRIVATE, 0);
-//	HFONT hFont = CreateFont
-//	(
-//		g_i_DISPLAY_HEIGHT - 2, g_i_DISPLAY_HEIGHT / 3,
-//		0,
-//		0,
-//		FW_BOLD,
-//		FALSE, FALSE, FALSE,
-//		DEFAULT_CHARSET,
-//		OUT_TT_PRECIS,
-//		CLIP_DEFAULT_PRECIS,
-//		ANTIALIASED_QUALITY,
-//		FF_DONTCARE,
-//		font_name
-//	);
-//	SendMessage(hEditDisplay, WM_SETFONT, (WPARAM)hFont, TRUE);
-//}
+
+VOID LoadFontFromDLL(HMODULE hFontModule, INT resourseID)
+{
+	HRSRC hFntSrc = FindResource(hFontModule, MAKEINTRESOURCE(resourseID), MAKEINTRESOURCE(RT_FONT));
+	HGLOBAL hFntMem = LoadResource(hFontModule, hFntSrc);
+	VOID* fntData = LockResource(hFntMem);
+	DWORD nFonts = 0;
+	DWORD len = SizeofResource(hFontModule, hFntSrc);
+	AddFontMemResourceEx(fntData, len, NULL, &nFonts);
+
+}
+VOID LoadFontsFromDLL(HMODULE hFontModule)
+{
+	for (int i = 301; i <= 303; i++)
+	{
+		LoadFontFromDLL(hFontModule, i);
+	}
+}
+
+VOID SetFont(HWND hwnd, CONST CHAR font_name[])
+{
+	HWND hEditDisplay = GetDlgItem(hwnd, IDC_EDIT_DISPLAY);
+	//AddFontResourceEx("fons\\Grainne-Ea52e.ttf", FR_PRIVATE, 0);
+	HFONT hFont = CreateFont
+	(
+		g_i_DISPLAY_HEIGHT - 2, g_i_DISPLAY_HEIGHT / 3,
+		0,
+		0,
+		FW_BOLD,
+		FALSE, FALSE, FALSE,
+		DEFAULT_CHARSET,
+		OUT_TT_PRECIS,
+		CLIP_DEFAULT_PRECIS,
+		ANTIALIASED_QUALITY,
+		FF_DONTCARE,
+		font_name
+	);
+	SendMessage(hEditDisplay, WM_SETFONT, (WPARAM)hFont, TRUE);
+}
+
