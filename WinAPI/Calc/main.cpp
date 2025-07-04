@@ -73,6 +73,7 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 	static INT index = 0;
 	static INT font_index = 0;
+	static BOOL window_color_changed = TRUE;
 	switch (uMsg)
 	{
 	case WM_CREATE:
@@ -203,14 +204,19 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_CTLCOLOREDIT:
 	{
 		HDC hdcEdit = (HDC)wParam;	
-		SetBkColor(hdcEdit, g_DISPLAY_BACKGROUND[index]);
+		SetBkMode(hdcEdit, OPAQUE);
 		SetTextColor(hdcEdit, g_DISPLAY_FOREGROUND[index]);
+		SetBkColor(hdcEdit, g_DISPLAY_BACKGROUND[index]);
 
-		HBRUSH hbrBackground = CreateSolidBrush(g_WINDOW_BACKGROUND[index]);
-		SetClassLongPtr(hwnd, GCLP_HBRBACKGROUND, (LONG)hbrBackground);
-		SendMessage(hwnd, WM_ERASEBKGND, wParam, 0);
-		RedrawWindow(hwnd, NULL, NULL, RDW_ERASE);
-		return (LRESULT)hbrBackground;
+		if (window_color_changed)
+		{
+			window_color_changed = FALSE;
+			HBRUSH hbrBackground = CreateSolidBrush(g_WINDOW_BACKGROUND[index]);
+			SetClassLongPtr(hwnd, GCLP_HBRBACKGROUND, (LONG)hbrBackground);
+			SendMessage(hwnd, WM_ERASEBKGND, wParam, 0);
+			RedrawWindow(hwnd, NULL, NULL, RDW_ERASE);
+			return (LRESULT)hbrBackground;
+		}
 	}
 	break;
 	case WM_COMMAND:
@@ -385,7 +391,10 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		InsertMenu(hMainMenu, 0, MF_BYPOSITION | MF_STRING, CM_SQUARE_BLUE, "Square Blue");
 		InsertMenu(hMainMenu, 0, MF_BYPOSITION | MF_STRING, CM_METAL_MISTRAL, "Metal Mistral");
 		InsertMenu(hMainMenu, 0, MF_BYPOSITION | MF_STRING, CM_SMESHARIKI, "Smeshariki");
-
+		InsertMenu(hMainMenu, 0, MF_BYPOSITION | MF_SEPARATOR, 0, NULL);
+		for (INT i = 0; i < 3; i++)
+			InsertMenu(hMainMenu, i, MF_BYPOSITION | MF_STRING, i + 301, g_sz_FONT[i]);
+		
 		BOOL item = TrackPopupMenuEx(hMainMenu, TPM_RETURNCMD | TPM_RIGHTALIGN | TPM_BOTTOMALIGN, LOWORD(lParam), HIWORD(lParam), hwnd, NULL);
 
 		switch (item)
@@ -413,7 +422,11 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			//SetFocus(hEditDisplay);
 			//SetSkinFromDLL(hwnd, g_sz_SKIN[index]);
 		}
-		
+		if (item >= 301 && item <= 303)
+		{
+			font_index = item - 300 - 1;
+			SetFont(hwnd, g_sz_FONT[font_index]);
+		}
 
 	}
 	break;
