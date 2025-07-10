@@ -1,4 +1,5 @@
-﻿#include<Windows.h>
+﻿//#define DEBUG
+#include<Windows.h>
 #include<float.h>
 #include<stdio.h>
 #include<iostream>
@@ -8,7 +9,7 @@
 INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 VOID SetSkin(HWND hwnd, CONST CHAR sz_skin[]);
 VOID SetSkinFromDLL(HWND hwnd, CONST CHAR sz_skin[]);
-VOID LoadFontFromDLL(HMODULE hFontModule, INT resourseID);
+VOID LoadFontFromDLL(HMODULE hFontModule, INT resourceID);
 VOID LoadFontsFromDLL(HMODULE hFontModule);
 VOID SetFont(HWND hwnd, CONST CHAR font_name[]);
 
@@ -52,7 +53,7 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, IN
 		NULL
 	);
 	ShowWindow(hwnd, nCmdShow);	
-	UpdateWindow(hwnd);		
+	UpdateWindow(hwnd);			
 
 	MSG msg;
 	while (GetMessage(&msg, NULL, 0, 0) > 0)
@@ -69,18 +70,22 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	static DOUBLE b = DBL_MIN;
 	static INT operation = 0;
 	static BOOL input = FALSE;				
-	static BOOL input_operation = FALSE;
+	static BOOL input_operation = FALSE;	
 
-	static INT index = 0;
+	static INT index = 2;
 	static INT font_index = 0;
 	static BOOL window_color_changed = TRUE;
+
 	switch (uMsg)
 	{
 	case WM_CREATE:
 	{
+#ifdef DEBUG
 		AllocConsole();
 		freopen("CONOUT$", "w", stdout);
 		system("CHCP 1251");
+#endif 
+
 		HWND hEditDisplay = CreateWindowEx
 		(
 			NULL, "Edit", "0",
@@ -92,22 +97,6 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			GetModuleHandle(NULL),
 			NULL
 		);
-		AddFontResourceEx("fons\\Grainne-Ea52e.ttf", FR_PRIVATE, 0);
-		HFONT hFont = CreateFont
-		(
-			g_i_DISPLAY_HEIGHT - 2, g_i_DISPLAY_HEIGHT / 3,
-			0,
-			0,
-			FW_BOLD,
-			FALSE, FALSE, FALSE,
-			DEFAULT_CHARSET,
-			OUT_TT_PRECIS,
-			CLIP_DEFAULT_PRECIS,
-			ANTIALIASED_QUALITY,
-			FF_DONTCARE,
-			"Grainne-Ea52e"
-		);
-		SendMessage(hEditDisplay, WM_SETFONT, (WPARAM)hFont, TRUE);
 
 		INT iDigit = IDC_BUTTON_1;
 		CHAR szDigit[2] = {};
@@ -154,7 +143,7 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			GetModuleHandle(NULL),
 			NULL
 		);
-
+		
 		for (int i = 0; i < 4; i++)
 		{
 			CreateWindowEx
@@ -184,7 +173,8 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				NULL
 			);
 		}
-
+	
+		HICON hIcon = (HICON)LoadImage(GetModuleHandle(NULL), "BMP\\0.bmp", IMAGE_BITMAP, LR_DEFAULTSIZE, LR_DEFAULTSIZE, LR_LOADFROMFILE);
 		//GetLastError();
 		//CHAR sz_error[32] = "";
 		//sprintf(sz_error, "%i", GetLastError());
@@ -194,10 +184,9 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 		//SetSkin(hwnd, "metal_mistral");
 		SetSkinFromDLL(hwnd, "smeshariki");
-		HMODULE hFonts = LoadLibrary("fons.DLL");
+		HMODULE hFonts = LoadLibrary("Fonts.DLL");
 		LoadFontsFromDLL(hFonts);
 		SetFont(hwnd, g_sz_FONT[font_index]);
-
 	}
 	break;
 
@@ -239,11 +228,11 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		if (LOWORD(wParam) >= IDC_BUTTON_PLUS && LOWORD(wParam) <= IDC_BUTTON_SLASH)
 		{
 			SendMessage(hEditDisplay, WM_GETTEXT, g_SIZE, (LPARAM)szDisplay);
-			if (input && a == DBL_MIN)a = atof(szDisplay);	
+			if (input && a == DBL_MIN)a = atof(szDisplay);
 			if (input)b = atof(szDisplay);
 			input = FALSE;
-			SendMessage(hwnd, WM_COMMAND, IDC_BUTTON_EQUAL, 0);	
-			operation = LOWORD(wParam);		
+			SendMessage(hwnd, WM_COMMAND, IDC_BUTTON_EQUAL, 0);
+			operation = LOWORD(wParam);	
 			input_operation = TRUE;
 		}
 		if (LOWORD(wParam) == IDC_BUTTON_BSP)
@@ -279,7 +268,6 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			SendMessage(hEditDisplay, WM_SETTEXT, 0, (LPARAM)szDisplay);
 		}
 		SetFocus(hwnd);
-	
 	}
 	break;
 
@@ -391,42 +379,44 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		InsertMenu(hMainMenu, 0, MF_BYPOSITION | MF_STRING, CM_SQUARE_BLUE, "Square Blue");
 		InsertMenu(hMainMenu, 0, MF_BYPOSITION | MF_STRING, CM_METAL_MISTRAL, "Metal Mistral");
 		InsertMenu(hMainMenu, 0, MF_BYPOSITION | MF_STRING, CM_SMESHARIKI, "Smeshariki");
+		
 		InsertMenu(hMainMenu, 0, MF_BYPOSITION | MF_SEPARATOR, 0, NULL);
 		HMENU hMenuFonts = CreatePopupMenu();
 		for (INT i = 0; i < 3; i++)
 			InsertMenu(hMenuFonts, i, MF_BYPOSITION | MF_STRING, i + 301, g_sz_FONT[i]);
-
 		InsertMenu(hMainMenu, 0, MF_POPUP | MF_BYPOSITION, (UINT_PTR)hMenuFonts, "Fonts");
+
 		CheckMenuItem(hMenuFonts, font_index, MF_BYPOSITION | MF_CHECKED);
 		CheckMenuItem(hMainMenu, index + 201, MF_BYCOMMAND | MF_CHECKED);
+
 		BOOL item = TrackPopupMenuEx(hMainMenu, TPM_RETURNCMD | TPM_RIGHTALIGN | TPM_BOTTOMALIGN, LOWORD(lParam), HIWORD(lParam), hwnd, NULL);
+		
 
 		switch (item)
 		{
 		case CM_EXIT:			SendMessage(hwnd, WM_DESTROY, 0, 0);	break;
 		case CM_SQUARE_BLUE:	SetSkinFromDLL(hwnd, "square_blue");	break;
 		case CM_METAL_MISTRAL:	SetSkinFromDLL(hwnd, "metal_mistral");	break;
-		case CM_SMESHARIKI:     SetSkinFromDLL(hwnd, "smeshariki");    break;
+		case CM_SMESHARIKI:  	SetSkinFromDLL(hwnd, "smeshariki");	break;
 		}
 		DestroyMenu(hMainMenu);
 
 		if (item >= 201 && item <= 210)
 		{
-			index = item - CM_SQUARE_BLUE;
+			index = item - CM_EXIT - 1;
+			SetSkinFromDLL(hwnd, g_sz_SKIN[index]);
 
 			HWND hEditDisplay = GetDlgItem(hwnd, IDC_EDIT_DISPLAY);
 			HDC hdcEditDisplay = GetDC(hEditDisplay);
+			window_color_changed = TRUE;
 			SendMessage(hwnd, WM_CTLCOLOREDIT, (WPARAM)hdcEditDisplay, 0);
 			ReleaseDC(hEditDisplay, hdcEditDisplay);	
 
 			CHAR sz_buffer[g_SIZE] = {};
-			SendMessage(hwnd, WM_GETTEXT, g_SIZE, (LPARAM)sz_buffer);
-			//SendMessage(hwnd, WM_SETTEXT, 0, (LPARAM)"");
-			SendMessage(hwnd, WM_SETTEXT, 0, (LPARAM)sz_buffer);
-			//SetFocus(hEditDisplay);
-			//SetSkinFromDLL(hwnd, g_sz_SKIN[index]);
+			SendMessage(hEditDisplay, WM_GETTEXT, g_SIZE, (LPARAM)sz_buffer);
+			SendMessage(hEditDisplay, WM_SETTEXT, 0, (LPARAM)sz_buffer);
 		}
-		if (item >= 301 && item <= 303)
+		if (item >= 301 && item <= 304)
 		{
 			font_index = item - 300 - 1;
 			SetFont(hwnd, g_sz_FONT[font_index]);
@@ -521,29 +511,25 @@ VOID SetSkinFromDLL(HWND hwnd, CONST CHAR sz_skin[])
 	}
 	FreeLibrary(hButtonsModule);
 }
-
-VOID LoadFontFromDLL(HMODULE hFontModule, INT resourseID)
+VOID LoadFontFromDLL(HMODULE hFontModule, INT resourceID)
 {
-	HRSRC hFntSrc = FindResource(hFontModule, MAKEINTRESOURCE(resourseID), MAKEINTRESOURCE(RT_FONT));
-	HGLOBAL hFntMem = LoadResource(hFontModule, hFntSrc);
+	HRSRC hFntRes = FindResource(hFontModule, MAKEINTRESOURCE(resourceID), MAKEINTRESOURCE(RT_FONT));
+	HGLOBAL hFntMem = LoadResource(hFontModule, hFntRes);
 	VOID* fntData = LockResource(hFntMem);
 	DWORD nFonts = 0;
-	DWORD len = SizeofResource(hFontModule, hFntSrc);
+	DWORD len = SizeofResource(hFontModule, hFntRes);
 	AddFontMemResourceEx(fntData, len, NULL, &nFonts);
-
 }
 VOID LoadFontsFromDLL(HMODULE hFontModule)
 {
-	for (int i = 301; i <= 303; i++)
+	for (int i = 301; i <= 304; i++)
 	{
 		LoadFontFromDLL(hFontModule, i);
 	}
 }
-
 VOID SetFont(HWND hwnd, CONST CHAR font_name[])
 {
 	HWND hEditDisplay = GetDlgItem(hwnd, IDC_EDIT_DISPLAY);
-	//AddFontResourceEx("fons\\Grainne-Ea52e.ttf", FR_PRIVATE, 0);
 	HFONT hFont = CreateFont
 	(
 		g_i_DISPLAY_HEIGHT - 2, g_i_DISPLAY_HEIGHT / 3,
@@ -560,4 +546,3 @@ VOID SetFont(HWND hwnd, CONST CHAR font_name[])
 	);
 	SendMessage(hEditDisplay, WM_SETFONT, (WPARAM)hFont, TRUE);
 }
-
